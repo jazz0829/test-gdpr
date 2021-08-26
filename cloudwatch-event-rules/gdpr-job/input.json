@@ -1,0 +1,85 @@
+{
+    "inputs": {
+        "slack_message_start_gdpr_job": {
+          "message": "Started GDPR Job for S3."
+        },
+        "query_athena_account_for_divisions_to_be_updated": {
+          "QuerySettings": {
+            "QueryString": "",
+            "QueryExecutionContext": {
+              "Database": "${eol-database-name}"
+            },
+            "ResultConfiguration": {
+              "OutputLocation": "${athena_query_output_location}"
+            }
+          },
+          "Tables": [
+            {
+              "Name": "object_host_cig_divisions",
+              "AccountIDColumn": "customer"
+            }
+          ]
+        },
+        "query_athena_account_for_divisions_to_be_anonymized": {
+          "QuerySettings": {
+            "QueryString": "",
+            "QueryExecutionContext": {
+              "Database": "${eol-database-name}"
+            },
+            "ResultConfiguration": {
+              "OutputLocation": "${athena_query_output_location}"
+            }
+          },
+          "Tables": [
+            {
+              "Name": "object_host_cig_accounts",
+              "AccountIDColumn": "id",
+              "DateColumn": "cigcopytime"
+            },
+            {
+              "Name": "object_host_cig_requests",
+              "AccountIDColumn": "account",
+              "DateColumn": "cigcopytime"
+            },
+            {
+              "Name": "object_account",
+              "AccountIDColumn": "exact_id__c",
+              "DateColumn": "etlinserttime"
+            }
+          ]
+        },
+        "query_athena_person_for_divisions_to_be_anonymized": {
+          "QuerySettings": {
+            "QueryString": "",
+            "QueryExecutionContext": {
+              "Database": "${eol-database-name}"
+            },
+            "ResultConfiguration": {
+              "OutputLocation": "${athena_query_output_location}"
+            }
+          },
+          "Tables": [
+            {
+              "Name": "object_host_cig_persons",
+              "PersonIDColumn": "id",
+              "DateColumn": "cigcopytime"
+            },
+            {
+              "Name": "object_host_cig_users",
+              "PersonIDColumn": "person",
+              "DateColumn": "cigcopytime"
+            },
+            {
+              "Name": "object_user",
+              "PersonIDColumn": "userid__c",
+              "DateColumn": "etlinserttime"
+            },
+            {
+              "Name": "object_contact",
+              "PersonIDColumn": "userid__c",
+              "DateColumn": "etlinserttime"
+            }
+          ]
+        }
+    }
+}

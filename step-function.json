@@ -1,0 +1,31 @@
+{
+    "StartAt": "Start - Notify Slack",
+    "States": {
+        "Start - Notify Slack": {
+            "Type": "Task",
+            "Resource": "${cig-sagemaker-slack-lambda-arn",
+            "InputPath": "$.inputs.slack_message_start_gdpr_job",
+            "ResultPath": "$.results.slack_message_start_gdpr_job",
+            "Next": "Query Athena Account for divisions to be anonymized"
+        },
+        "Query Athena Account for divisions to be anonymized": {
+            "Type": "Task",
+            "Resource": "",
+            "InputPath": "$.inputs.query_athena_account_for_divisions_to_be_anonymized",
+            "ResultPath": "$.results.query_athena_account_for_divisions_to_be_anonymized_result",
+            "Next": "Wait for Athena Account query to finish"
+        },
+        "Wait for Athena Account query to finish": {
+          "Type": "Wait",
+          "Seconds": 300,
+          "Next": "Check Athena Account query status"
+        },
+        "Check Athena Account query status": {
+          "Type": "Task",
+          "Resource": "${cig-check-athena-query-status-lambda-arn}",
+          "InputPath": ".results.query_athena_account_for_divisions_to_be_anonymized_result",
+          "ResultPath": "",
+          "Next": "Is Athena query finished ?"
+        }
+    }
+}
